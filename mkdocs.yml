@@ -6,6 +6,7 @@ site_url: https://Shyizi3694.github.io/My-Knowledge-Hub/
 
 theme:
   name: material
+  custom_dir: overrides # <--- 添加这一行
   language: zh
   features:
     - navigation.tabs  # <--- 核心是这一行，确保它存在且没有拼写错误
