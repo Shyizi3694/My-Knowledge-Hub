@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "mkdocs.yml",
+      "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
         "installCommand": "pip3 install -r requirements.txt",
