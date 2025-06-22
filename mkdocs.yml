@@ -1,0 +1,142 @@
+# mkdocs.yml
+
+site_name: My Knowledge Hub
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs  # <--- 核心是这一行，确保它存在且没有拼写错误
+    # ... 您可能还需要的其他功能 ...
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Home: index.md
+
+  - Computer Science:
+      - 导论与概述: cs/index.md
+      - 计算机理论基础:
+          - 离散数学及其应用: cs/theory/discrete_math.md
+          - 数据结构与算法分析: cs/theory/data_structures_algorithms.md
+          - 数值分析: cs/theory/numerical_analysis.md
+      - 编程语言与范式:
+          - C 程序设计基础: cs/languages/c_basics.md
+          - 面向对象程序设计 (C++): cs/languages/oop_cpp.md
+      - 计算机系统与硬件:
+          - 数字逻辑设计: cs/systems/digital_logic.md
+          - 计算机组成: cs/systems/organization.md
+          - 计算机体系结构: cs/systems/architecture.md
+      - 数据科学与智能:
+          - 人工智能导论: cs/ai/intro_to_ai.md
+          - 数据挖掘导论: cs/ai/data_mining.md
+          - 图像信息处理: cs/ai/image_processing.md
+      - 计算机应用与安全:
+          - 数据库系统: cs/applied/database_systems.md
+          - 信息安全原理: cs/applied/security_principles.md
+
+
+  - Mathematics:
+      - 数学概述与思想: math/index.md
+      - 分析学:
+          - 数学分析 III: math/analysis/mathematical_analysis.md
+          - 实变函数: math/analysis/real_analysis.md
+          - 复变函数: math/analysis/complex_analysis.md
+          - 常微分方程: math/analysis/ode.md
+          - 偏微分方程: math/analysis/pde.md
+      - 代数与几何:
+          - 高等代数与解析几何 II: math/algebra_geometry/higher_algebra.md
+          - 抽象代数: math/algebra_geometry/abstract_algebra.md
+          - 点集拓扑: math/algebra_geometry/topology.md
+      - 概率与统计:
+          - 概率论: math/prob_stats/probability_theory.md
+          - 数理统计: math/prob_stats/mathematical_statistics.md
+          - 数据建模与分析: math/prob_stats/data_modeling.md
+      - 应用与优化:
+          - 优化实用算法: math/applied/optimization_algorithms.md
+          - 组合优化: math/applied/combinatorial_optimization.md
+      - 数学史: math/history.md
+
+  - General Education:
+      - 经济学原理: gen_ed/economics.md
+      - 社会学导论: gen_ed/sociology.md
+      - 艺术史: gen_ed/art_history.md
+
+  - Toolkit:
+      - 版本控制:
+          - Git 实用技巧: skills/git.md
+      - 开发与部署:
+          - Docker 容器化: skills/docker.md
+          - SSH & 远程服务器: skills/ssh.md
+      - 文档与知识管理:
+          - MkDocs 指南: skills/mkdocs.md
+      - 命令行工具:
+          - Shell & CLI Power-ups: skills/shell.md
+
+  - Research:
+      - 概述与方法论: research/index.md
+      - 机器学习基础: research/machine_learning_basics.md
+      - 深度学习算法复现:
+          - 项目一：CNN 图像分类: research/repro/cnn_project.md
+          - 项目二：Transformer 文本生成: research/repro/transformer_project.md
+          - 项目三：强化学习 CartPole: research/repro/rl_cartpole.md
+
+  - Papers:
+      - 自然语言处理 (NLP):
+          - Attention Is All You Need (Transformer): papers/nlp/attention_is_all_you_need.md
+          - 'BERT: Pre-training of Deep Bidirectional Transformers': papers/nlp/bert.md
+      - 计算机视觉 (CV):
+          - Deep Residual Learning for Image Recognition' (ResNet): papers/cv/resnet.md
+      - 强化学习 (RL):
+          - Playing Atari with Deep Reinforcement Learning (DQN): papers/rl/dqn.md
+
+
+# extra_css:
+#   - stylesheets/extra.css
+
+# mkdocs.yml
+
+markdown_extensions:
+  # --- 基础功能 ---
+  - admonition
+  - toc:
+      permalink: true # 为标题添加永久链接
+      toc_depth: 3    # 目录深度
+  - meta
+  - attr_list
+
+  # --- PyMdownX 扩展精选 ---
+  - pymdownx.details          # 可折叠块
+  - pymdownx.superfences      # 高级代码块，支持嵌套和图表
+  - pymdownx.tabbed:          # 选项卡内容
+      alternate_style: true
+  - pymdownx.tasklist:        # 任务列表
+      custom_checkbox: true
+      clickable_checkbox: true # <--- 添加这一行
+  - pymdownx.arithmatex:        # LaTeX 数学公式
+      generic: true
+
+  # --- 以下是新增的“锦上添花”功能 ---
+  - pymdownx.highlight:       # 代码高亮
+      anchor_linenums: true   # 为代码行添加锚点
+      line_spans: __span      # 支持高亮特定行
+      pygments_lang_class: true
+  - pymdownx.inlinehilite       # 行内代码高亮
+  - pymdownx.snippets         # 引入其他文件片段
+  - pymdownx.critic           # 审阅标记（添加、删除、评论）
+  - pymdownx.caret            # ^^插入^^ 和 ^上标^
+  - pymdownx.tilde            # ~~删除线~~ 和 ~下标~
+  - pymdownx.mark             # ==高亮标记==
+  - pymdownx.keys             # ++ctrl+c++ 键盘按键样式
+  - pymdownx.emoji:           # Emoji 表情 :smile:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# 在 mkdocs.yml 的顶层添加，不要放在 theme: 或 markdown_extensions: 内部
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
