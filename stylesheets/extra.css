@@ -1,0 +1,17 @@
+/*
+ * 全局字体自定义
+ * 浏览器会从左到右依次寻找字体：
+ * 1. 遇到英文字符，优先使用 "Times New Roman"。
+ * 2. 遇到中文字符，"Times New Roman" 中没有，则向后寻找，使用 "Songti SC" 或 "SimSun" (宋体)。
+ * 3. 如果以上字体都不可用，则使用浏览器默认的衬线字体 (serif)。
+*/
+body {
+    font-family: "Times New Roman", "Songti SC", "SimSun", serif;
+}
+
+/* * (可选，但强烈推荐) 为代码块设置一个清晰的等宽字体。
+ * 否则代码也会变成 Times New Roman，可读性很差。
+*/
+code, kbd, pre, samp {
+    font-family: "Consolas", "Courier New", "Microsoft YaHei Mono", monospace;
+}
