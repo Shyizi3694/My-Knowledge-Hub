@@ -1,6 +1,8 @@
 # mkdocs.yml
 
-site_name: My Knowledge Hub
+site_name: Shyizi's Knowledge Hub
+
+site_url: https://Shyizi3694.github.io/My-Knowledge-Hub/
 
 theme:
   name: material
