@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "mkdocs.yml",
+      "use": "@vercel/static-build",
+      "config": {
+        "installCommand": "pip3 install -r requirements.txt",
+        "buildCommand": "mkdocs build",
+        "outputDirectory": "site"
+      }
+    }
+  ]
+}
