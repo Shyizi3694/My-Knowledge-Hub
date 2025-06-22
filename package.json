@@ -1,9 +1,5 @@
 {
-    "name": "mkdocs",
-    "version": "1.0.0",
-    "private": true,
-    "scripts": {
-        "dev": "mkdocs serve",
-        "build": "mkdocs build -d public"
-    }
+  "scripts": {
+    "build": "pip3 install -r requirements.txt && python3 -m mkdocs build"
+  }
 }
