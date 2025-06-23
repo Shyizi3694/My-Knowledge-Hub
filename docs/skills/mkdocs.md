@@ -1,10 +1,6 @@
 # MkDocs 指南
 
 
-<!-- ---
-title: Markdown 扩展功能演示
-description: 一个用于测试和展示 MkDocs Material 所有推荐扩展功能的页面。
---- -->
 
 ## Markdown 扩展功能演示大全
 
@@ -62,21 +58,23 @@ description: 一个用于测试和展示 MkDocs Material 所有推荐扩展功�
 > eeeeeee
 
 
+> [!property]
+> This is a property.
+
+> [!axiom]
+> This is an axiom.
+
+> [!proof]
+> This is a Proof
+
+> [!algorithm]
+> This is an algorithm.
+
 
 
 #### 可折叠的标注块
 
-使用 `???` 代替 `!!!` 即可创建默认折叠的块。
 
-??? note "这是一个默认折叠的笔记"
-    只有在点击之后，这段文字才会显示出来。非常适合存放答案、长日志或不那么重要的补充信息。
-
-??? example "折叠的代码示例"
-    ```python
-    ## 这段代码默认是隐藏的
-    import os
-    print("Hello, Collapsed World!")
-    ```
 
 ---
 
@@ -86,7 +84,7 @@ description: 一个用于测试和展示 MkDocs Material 所有推荐扩展功�
 
 #### 高亮、插入、删除、上下标
 
-* **高亮 (Mark)**: 我们用 ==荧光笔== 来划重点。 `==荧光笔==`
+* **高亮 (Mark)**: 我们用 ==荧光笔== 来划重点。 `\==荧光笔\==`
 * **删除线 (Tilde)**: 这是一个 ~~错误的说法~~。 `~~错误的说法~~`
 * **下标 (Tilde)**: H~2~O 是水的化学式。 `H~2~O`
 * **插入 (Caret)**: 这是一个 ^^新加入的^^ 文本。 `^^新加入的^^`
@@ -96,9 +94,9 @@ description: 一个用于测试和展示 MkDocs Material 所有推荐扩展功�
 
 在技术文档中清晰地展示快捷键。
 
-* 要复制文本，请使用 ++ctrl+c++。
-* 要保存文件，请使用 ++cmd+s++。
-* 组合键如 ++shift+alt+f++ 用于格式化代码。
+* 要复制文本，请使用 <kbd>ctrl</kbd>+<kbd>c</kbd>。
+* 要保存文件，请使用 <kbd>cmd</kbd>+<kbd>s</kbd>。
+* 组合键如 <kbd>shift</kbd>+<kbd>alt</kbd>+<kbd>f</kbd> 用于格式化代码。
 
 #### 审阅标记 (Critic)
 

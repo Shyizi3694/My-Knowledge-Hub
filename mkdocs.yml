@@ -125,8 +125,8 @@ nav:
           - Playing Atari with Deep Reinforcement Learning (DQN): papers/rl/dqn.md
 
 
-# extra_css:
-#   - stylesheets/extra.css
+extra_css:
+  - stylesheets/extra.css
 
 # mkdocs.yml
 
