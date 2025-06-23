@@ -18,33 +18,51 @@ description: 一个用于测试和展示 MkDocs Material 所有推荐扩展功�
 
 #### 基本类型
 
-!!! note "这是一个笔记 (Note)"
-    这是一个普通的笔记，用于补充说明。
+> [!note] "这是一个笔记 (Note)"
+> 这是一个普通的笔记，用于补充说明。
 
-!!! info "这是一个信息 (Info)"
-    这是一个通用的信息提示。
+> [!info] "这是一个信息 (Info)"
+> 这是一个通用的信息提示。
 
-!!! todo "这是一个待办事项 (Todo)"
-    - [x] 学习 Admonition 语法
-    - [ ] 应用到自己的笔记中
+> [!todo] "这是一个待办事项 (Todo)"
+> - [x] 学习 Admonition 语法
+> - [ ] 应用到自己的笔记中
 
-!!! tip "这是一个技巧 (Tip)"
-    `mkdocs serve` 会实时刷新你的网站，非常方便。
+> [!tip] "这是一个技巧 (Tip)"
+> `mkdocs serve` 会实时刷新你的网站，非常方便。
 
-!!! question "这是一个问题 (Question)"
-    如何启用这些功能？答：在 `mkdocs.yml` 中配置 `markdown_extensions`。
+> [!question] "这是一个问题 (Question)"
+> 如何启用这些功能？答：在 `mkdocs.yml` 中配置 `markdown_extensions`。
 
-!!! warning "这是一个警告 (Warning)"
-    请注意 YAML 格式对缩进非常敏感。
+> [!warning] "这是一个警告 (Warning)"
+> 请注意 YAML 格式对缩进非常敏感。
 
-!!! danger "这是一个危险操作 (Danger)"
-    永远不要在不理解后果的情况下运行 `rm -rf /`。
+> [!danger] "这是一个危险操作 (Danger)"
+> 永远不要在不理解后果的情况下运行 `rm -rf /`。
 
-!!! example "这是一个示例 (Example)"
-    这里可以放一些示例性的代码或文字。
+> [!example] "这是一个示例 (Example)"
+> 这里可以放一些示例性的代码或文字。
 
-!!! bug "这是一个缺陷报告 (Bug)"
-    在版本 1.0 中，此功能可能存在兼容性问题。
+> [!bug] "这是一个缺陷报告 (Bug)"
+> 在版本 1.0 中，此功能可能存在兼容性问题。
+
+> [!definition]
+> aaaa
+
+> [!theorem]
+> bbbbbb
+
+> [!lemma]
+> cccccc
+
+> [!corollary]
+> dddddd
+
+> [!proposition]
+> eeeeeee
+
+
+
 
 #### 可折叠的标注块
 

@@ -5,6 +5,9 @@ site_name: Shyizi's Knowledge Hub
 site_url: https://Shyizi3694.github.io/My-Knowledge-Hub/
 
 theme:
+  palette:
+    primary: cyan
+    accent: green
   name: material
   custom_dir: overrides # <--- 添加这一行
   language: zh
@@ -163,6 +166,10 @@ markdown_extensions:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
+plugins:
+  - search
+  - callouts
+            
 # 在 mkdocs.yml 的顶层添加，不要放在 theme: 或 markdown_extensions: 内部
 extra_javascript:
   - javascripts/mathjax.js

@@ -1,17 +1,101 @@
 /*
- * 全局字体自定义
- * 浏览器会从左到右依次寻找字体：
- * 1. 遇到英文字符，优先使用 "Times New Roman"。
- * 2. 遇到中文字符，"Times New Roman" 中没有，则向后寻找，使用 "Songti SC" 或 "SimSun" (宋体)。
- * 3. 如果以上字体都不可用，则使用浏览器默认的衬线字体 (serif)。
-*/
-body {
-    font-family: "Times New Roman", "Songti SC", "SimSun", serif;
+ * ===================================================================
+ * 自定义 Callouts (for a-shyizi)
+ * ===================================================================
+ */
+
+/* 基础样式 (适用于所有自定义 callout) */
+.callout {
+  border-left-width: 0.3rem;
+  border-radius: 0.2rem;
+  margin-bottom: 1.2rem;
+  overflow: auto;
 }
 
-/* * (可选，但强烈推荐) 为代码块设置一个清晰的等宽字体。
- * 否则代码也会变成 Times New Roman，可读性很差。
-*/
-code, kbd, pre, samp {
-    font-family: "Consolas", "Courier New", "Microsoft YaHei Mono", monospace;
+.callout-title {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+}
+
+.callout-title-inner {
+  margin-left: 0.5rem;
+}
+
+.callout-content {
+  padding: 0.5rem 1rem;
+}
+
+/* 使用 Material Design 图标字体 */
+.callout-title::before {
+  font-family: "Material Design Icons";
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/*
+ * -------------------------------------------------------------------
+ * 为每种数学环境定义图标和颜色
+ * -------------------------------------------------------------------
+ */
+
+/* --- 定义 (Definition) --- */
+.callout-definition {
+  border-color: #2196F3; /* Material Blue 500 */
+  background-color: rgba(33, 150, 243, 0.1);
+}
+.callout-definition > .callout-title {
+  color: #1E88E5; /* Material Blue 600 */
+}
+.callout-definition > .callout-title::before {
+  content: "\F00D5"; /* 图标: book-open-outline */
+}
+
+/* --- 定理 (Theorem) --- */
+.callout-theorem {
+  border-color: #673AB7; /* Material Deep Purple 500 */
+  background-color: rgba(103, 58, 183, 0.1);
+}
+.callout-theorem > .callout-title {
+  color: #5E35B1; /* Material Deep Purple 600 */
+}
+.callout-theorem > .callout-title::before {
+  content: "\F0552"; /* 图标: trophy-outline */
+}
+
+/* --- 引理 (Lemma) --- */
+.callout-lemma {
+  border-color: #009688; /* Material Teal 500 */
+  background-color: rgba(0, 150, 136, 0.1);
+}
+.callout-lemma > .callout-title {
+  color: #00897B; /* Material Teal 600 */
+}
+.callout-lemma > .callout-title::before {
+  content: "\F0786"; /* 图标: lightbulb-on-outline */
+}
+
+/* --- 推论 (Corollary) --- */
+.callout-corollary {
+  border-color: #795548; /* Material Brown 500 */
+  background-color: rgba(121, 85, 72, 0.1);
+}
+.callout-corollary > .callout-title {
+  color: #6D4C41; /* Material Brown 600 */
+}
+.callout-corollary > .callout-title::before {
+  content: "\F15F9"; /* 图标: creation */
+}
+
+/* --- 命题 (Proposition) --- */
+.callout-proposition {
+  border-color: #8BC34A; /* Material Light Green 500 */
+  background-color: rgba(139, 195, 74, 0.1);
+}
+.callout-proposition > .callout-title {
+  color: #7CB342; /* Material Light Green 600 */
+}
+.callout-proposition > .callout-title::before {
+  content: "\F0E5A"; /* 图标: bullhorn-outline */
 }
