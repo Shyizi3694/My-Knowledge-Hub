@@ -4,7 +4,7 @@
 
 将我所有大学期间学习的所有内容组织成一个包罗万象的笔记仓库，这个想法是在大二春夏学期的最后一门考试结束之时同步萌生出来的。选择使用 MkDocs-Material 作为工具，一定程度上是受本学期专业课——计算机体系结构（Computer Architecture）的实验文档的启发。同时，我在复习各门课程时时常参考往届学长笔记，其中使用 MkDocs 的优秀例子并不少见。
 
-因此，在当天回家的动车上，我以学习 MkDocs 的基本使用方法为期末成绩惨淡的慰藉。这篇文档也自此成为加入我的知识库的第一位成员。
+因此，在当天回家的动车上，我以学习 MkDocs 的基本使用方法为慰藉。这篇文档也自此成为加入我的知识库的第一位成员。
 
 ## MkDocs 简介
 
@@ -51,13 +51,13 @@ sudo apt install python3-pip
 
 在使用 Python 的过程中，使用虚拟环境是常见且推荐的做法，在此仅给出使用 venv 虚拟环境的方法，其他虚拟环境的尝试有待后续补充。
 
-1. 首先确保你在项目文件夹内：
+- 首先确保你在项目文件夹内：
 
 ```bash
 cd /Your-Directory-Path
 ```
 
-2. 创建 venv 虚拟环境：
+- 创建 venv 虚拟环境：
 
 ```bash
 python3 -m venv venv
@@ -65,7 +65,7 @@ python3 -m venv venv
 
 这可能需要一段时间。然后你会发现在项目根目录下出现了一个 venv 文件夹。
 
-3. 激活虚拟环境：
+- 激活虚拟环境：
 
 ```bash
 source venv/bin/activate
@@ -96,6 +96,8 @@ sudo apt install git
 > [!hint] 
 > Git 的配置与使用同样不再赘述。 
 
+---
+
 
 ### 可选：使用 Obsidian 等 Markdown 编辑器提升体验
 
@@ -123,6 +125,8 @@ sudo apt install git
 
 
 
+---
+
 
 ## 主要功能使用介绍
 
@@ -147,6 +151,16 @@ mkdocs new .
 - `docs/`：这是你的 Markdown 文件存放的地方
 	- `index.md`：一个初始化的导览文件
 - `mkdocs.yml`：一个全局的配置文件，仅包含网页大标题
+
+此时的网页是由 MkDocs 的默认主题渲染的（非常丑），我们需要使用 material 主题。在 `mkdocs.yml` 中添加如下内容：
+
+```yaml
+# mkdocs.yml
+theme:  # <- 注意这里没有缩进！！！
+  name: material
+  language: zh # <- 你可以选择将语言设为中文
+```
+
 
 ### 网页预览
 
@@ -174,7 +188,7 @@ mkdocs serve
 
 - **Step 1**：配置 `mkdocs.yml` 的 `site_url`
 
-你需要明确告诉 MkDocs 您网站的最终线上地址是什么，这样它才能正确地生成所有链接（如CSS、JS文件和页面间的跳转链接）。你需要在 `mkdocs.yml` 文件中加入这一行：
+你需要明确告诉 MkDocs 您网站的最终线上地址是什么，这样它才能正确地生成所有链接（如CSS、JS文件和页面间的跳转链接）。你需要在 `mkdocs.yml` 文件中加入这一行（请根据实际情况修改）：
 
 ```yaml
 # mkdocs.yml
@@ -203,17 +217,355 @@ mkdocs gh-deploy
 
 自此网页发布的操作全部完成。每次修改内容后，需要将内容推送提交，然后重新运行 `mkdocs gh-deploy`，你的修改才会在网页中反映出来。
 
+---
+
+
 ## 设计面向你的需求的个性化知识库
 
 上节内容，我们仅仅是创建一个简单的 demo 来初步学习 MkDocs 的使用，本节我们将以笔者需求为例，详细讲讲笔者在构建个性化知识库中所做的工作。
 
 ### Markdown 文件的组织与导航设计
 
+将笔记文件进行合理组织是一个很好的习惯，这就需要用到 MkDocs 中的导航（Navigation）配置。这部分的主要工作是在 `mkdocs.yml` 中编写导航结构，通过 YAML 的缩进控制文件之间的从属关系，将 Markdown 文件的（相对）地址作为 `nav` 字段的属性。因此，你可以不必在 `docs/` 下原原本本地体现你预期的导航结构，但是这样做仍然是被推荐的，这会给你带来更好的编辑体验。
 
+以笔者的主修专业专业课程为例，`docs/` 目录下的相关文件结构如下：
+
+```bash
+/mnt/d/notes-webpage/My-Knowledge-Hub/docs/
+└── cs/
+    ├── ai/
+    │   ├── data_mining.md
+    │   ├── image_processing.md
+    │   └── intro_to_ai.md
+    ├── applied/
+    │   ├── database_systems.md
+    │   └── security_principles.md
+    ├── index.md
+    ├── languages/
+    │   ├── c_basics.md
+    │   └── oop_cpp.md
+    ├── systems/
+    │   ├── architecture.md
+    │   ├── digital_logic.md
+    │   └── organization.md
+    └── theory/
+        ├── data_structures_algorithms.md
+        ├── discrete_math.md
+        └── numerical_analysis.md
+```
+
+那么对应 `mkdocs.yml` 文件中的相应配置就应该这样编写：
+
+```yaml
+# mkdocs.yml
+nav:
+  - Home: index.md
+  - Computer Science:
+      - 导论与概述: cs/index.md
+      - 计算机理论基础:
+          - 离散数学及其应用: cs/theory/discrete_math.md
+          - 数据结构与算法分析: cs/theory/data_structures_algorithms.md
+          - 数值分析: cs/theory/numerical_analysis.md
+      - 编程语言与范式:
+          - C 程序设计基础: cs/languages/c_basics.md
+          - 面向对象程序设计 (C++): cs/languages/oop_cpp.md
+      - 计算机系统与硬件:
+          - 数字逻辑设计: cs/systems/digital_logic.md
+          - 计算机组成: cs/systems/organization.md
+          - 计算机体系结构: cs/systems/architecture.md
+      - 数据科学与智能:
+          - 人工智能导论: cs/ai/intro_to_ai.md
+          - 数据挖掘导论: cs/ai/data_mining.md
+          - 图像信息处理: cs/ai/image_processing.md
+      - 计算机应用与安全:
+          - 数据库系统: cs/applied/database_systems.md
+          - 信息安全原理: cs/applied/security_principles.md
+```
+
+每一级缩进（两个 <kbd>space</kbd>）就意味着导航栏向下细分。如果你希望建一个不包含任何内容和子内容的导航栏，就不要添加 <kbd>:</kbd> 和后面的文件地址。
+
+> [!hint]
+> 你可以使用脚本批处理文件夹和文件的创建，并向其中事先写入最基本的内容，后续再向其填充。
+
+
+为了防止给读者阅读带来障碍，你应该避免过多级的缩进。另外一种优化的方式，同时能够提升你的网页美观程度的方式是将最外层的导航变为 **TAB**，这样最外层就会变为在网页主标题下方横向排列。你需要做的是在 `mkdocs.yml` 中添加如下内容（注意小心处理缩进！）：
+
+```yaml
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs  # <--- 核心是这一行，确保它存在且没有拼写错误
+    # ... 您可能还需要的其他功能 ...
+    - navigation.expand # <- 导航自动展开
+    - navigation.top # <- 回到顶部
+    - search.suggest # <- 搜索建议
+    - search.highlight # <- 搜索词高亮
+	- content.code.copy # <- 代码复制按钮
+```
+
+
+### 自定义 CSS（层叠样式表）
+
+>[!info]
+>这里假设你已经学会 CSS 的使用。
+
+这是一个能够解决你大部分排版需求的做法。规范的操作是：
+
+1. 在 `docs/` 下创建 `stylesheets/`
+2. 在其中放入编写好的 `extra.css`（后续可以直接在内部修改）
+3. 在 `mkdocs.yml` 链接 CSS 文件
+	```yaml
+	# mkdocs.yml
+	extra_css:
+	  - stylesheets/extra.css
+	```
+
+这样配置就完成了。
+
+### 更改颜色
+
+在 `mkdocs.yml` 的 `theme` 下添加调色盘（Palette）字段来简易设置颜色：
+
+```yaml
+# mkdocs.yml
+theme:
+  palette: 
+    schema: default # <- 模式：亮/暗
+    primary: indigo # <- 主题色
+    accent: indigo # <- 强调色，即鼠标所悬浮的选项颜色
+  # 其他 theme 配置
+# 其他配置
+```
+
+更复杂的颜色需要通过 CSS 文件设置。
+
+### 在 MkDocs 中使用 Markdown 扩展
+
+以下是常用的扩展，你只需直接将其放在 `mkdocs.yml` 文件中：
+
+```yaml
+# mkdocs.yml
+
+markdown_extensions:
+  # --- 基础功能 ---
+  - admonition # 标注块，详见下文“Markdown 扩展精选”章
+  - toc: # Table of Contents，为每个页面生成目录
+      permalink: true # 为标题添加永久链接的锚点图标（¶）
+      toc_depth: 3    # 目录深度
+  - meta # 允许您在 Markdown 文件的最顶部使用 YAML 语法定义元数据
+  - attr_list # 为一个 Markdown 元素（如标题、图片、段落）添加 HTML 属性
+
+  # --- PyMdownX 扩展精选 ---
+  - pymdownx.details          # 可折叠块
+  - pymdownx.superfences      # 高级代码块，支持嵌套和图表
+  - pymdownx.tabbed:          # 选项卡内容
+      alternate_style: true # 启用一种视觉上略有不同的选项卡样式
+  - pymdownx.tasklist:        # 任务列表
+      custom_checkbox: true # 使用 mkdocs-material 主题提供的美化过的圆形复选框
+      clickable_checkbox: true # 能够在页面内对任务框进行点击
+  - pymdownx.arithmatex:        # LaTeX 数学公式
+      generic: true
+
+  # --- 其他功能 ---
+  - pymdownx.highlight:       # 代码高亮
+      anchor_linenums: true   # 为代码行添加锚点
+      line_spans: __span      # 支持高亮特定行
+      pygments_lang_class: true
+  - pymdownx.inlinehilite       # 行内代码高亮
+  - pymdownx.snippets         # 引入其他文件片段
+  - pymdownx.critic           # 审阅标记（添加、删除、评论）
+  - pymdownx.caret            # ^^插入^^ 和 ^上标^
+  - pymdownx.tilde            # ~~删除线~~ 和 ~下标~
+  - pymdownx.mark             # ==高亮标记==
+  - pymdownx.keys             # ++ctrl+c++ 键盘按键样式
+  - pymdownx.emoji:           # Emoji 表情 :smile:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+```
+
+扩展的内容和基本功能概述在上面全部展示了。值得一提的是，这样做仍然无法支持 LaTeX 公式的渲染，需要做以下两步内容：
+
+- **Step 1**：补充以下内容（注意 `extra_javascript` 无缩进）：
+
+```yaml
+# mkdocs.yml
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+```
+
+- **Step 2**：创建 MathJax 配置文件
+
+上述配置引用了一个本地的 `javascripts/mathjax.js` 文件，我们需要创建它。
+- 在您的 `docs` 文件夹下，创建一个名为 `javascripts` 的文件夹。
+- 在 `javascripts` 文件夹内，创建一个名为 `mathjax.js` 的文件。
+- 将以下内容复制到 `mathjax.js` 文件中：
+
+```javascript
+window.MathJax = {
+  tex: {
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]],
+    processEscapes: true,
+    processEnvironments: true,
+  },
+  options: {
+    ignoreHtmlClass: ".*|",
+    processHtmlClass: "arithmatex",
+  },
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("mjx-container").forEach(function (x) {
+    x.parentElement.classList.add("math-display");
+  });
+});
+```
+
+这样我们就配置好了支持 Markdown 扩展的基本内容，能够正常使用。
+
+### 加入评论区
+
+这是互动功能中最核心、最常用的。目前最推荐、与 `mkdocs-material` 结合最优雅的方案是 **Giscus**。
+
+集成 Giscus 的步骤也非常简单：
+
+- **Step 1**：在 Github 仓库中进行准备
+
+1. **公开仓库**：确保知识库 GitHub 仓库是**公开（Public）**的。
+2. **安装 Giscus App**：访问 [Giscus App 页面](https://github.com/apps/giscus)，点击 "Install"，然后授权它访问您的知识库仓库。
+3. **开启 Discussions 功能**：进入您的 GitHub 仓库主页，点击 **Settings** -> **General**，找到 **Features** 部分，勾选并开启 **Discussions** 功能。
+
+- **Step 2**：配置 Giscus
+
+1. 访问 [Giscus 官网](https://giscus.app/zh-CN)。
+2. 按照页面提示填写配置：
+    - **仓库**：输入您的 GitHub 用户名 / 仓库名。
+    - **页面 ↔️ Discussion 映射关系**：选择一种映射方式，推荐选择 **“Discussion 标题包含页面路径 `pathname`”**，这种方式最稳定。
+    - **Discussion 分类**：选择一个您想用来存放评论的分类，通常选择 "Announcements" 或 "General"。
+    - **功能**：可以勾选“启用评论回复”等。
+    - **主题**：选择一个主题，可以选择“跟随网站主题（`light` / `dark`）”。
+3. **获取代码**：完成配置后，网站会自动生成一段 `<script>` 代码。复制这段代码，我们下一步会用到它。
+
+- **Step 3**：在 `mkdocs-material` 中嵌入 Giscus
+
+-  **创建 `overrides` 文件夹**：在您的项目根目录下（与 `mkdocs.yml` 同级），创建一个名为 `overrides` 的文件夹。
+-  **创建 `comments.html` 文件**：在 `overrides` 文件夹内，创建一个名为 `main.html` 的文件。
+-  **粘贴代码**：打开 `overrides/main.html`，将以下代码粘贴进去，并把 **Step 2** 中从 Giscus 官网复制的 `<script>` 代码替换掉下面的对应部分。
+
+  ```javascript
+  {% extends "base.html" %}
+
+  {% block content %}
+    {{ super() }}
+    <hr>
+    <h2>评论区</h2>
+    <script src="https://giscus.app/client.js"
+        data-repo="Shyizi3694/My-Knowledge-Hub"
+        data-repo-id="你的RepoID"
+        data-category="Announcements"
+        data-category-id="你的CategoryID"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+    </script>
+    {% endblock %}
+  ```
+  
+-  **配置 `mkdocs.yml`**：告诉 MkDocs 使用你的 `overrides` 文件夹。
+
+```yaml
+# mkdocs.yml
+theme:
+  name: material
+  custom_dir: overrides # <--- 添加这一行
+
+# ... 其他配置
+```
+
+这样集成 Giscus 的内容就完成了，你只需重新将其发布，就能在网页的每一个内容下看到评论区。
+
+---
+
+## 联动其他的 Markdown 编辑器（如 Obsidian）完善工作流
+
+### 概述
+
+前文提到，继续使用你目前惯用的或者带给你更好体验的 Markdown 编辑器是非常推荐的。VSCode 对 Markdown 的编辑界面并不是十分的好，现有的开源编辑器能够解决这一点。
+
+以 Obsidian 为例，它同样具有强大的生态，支持多种 Markdown 插件（需要科学上网浏览插件库），并且能够在页面上实时渲染，是很不错的 Markdown 专用编辑器的选择。你需要做的仅仅是将 `docs/` 作为 Obsidian 的仓库（Vault）目录，在 vault 内部进行 Obsidian 插件安装和配置；网页本身的配置，以及网页预览、发布的内容，则仍然由 VSCode 负责，在 `mkdocs.yml` 中编写配置，在终端中使用命令行。这样你就能同时获得优秀的 Markdown 编辑体验，同时还能拥抱 MkDocs-Material 将 Markdown 部署为网页的功能。
+
+> [!warning] 
+> 注意不要将整个项目的根目录作为 Obsidian 仓库，因为根目录下还有如 `venv/` 之类的文件夹，可能会导致 Vault 初始化失败。
+
+
+### Obsidian-Admonition 插件与 MkDocs-Material 的兼容问题
+
+在 Obsidian 中同样可以使用 Admonition 插件，但是语法不同。所幸有一种两者都兼容的写法：
+
+```markdown
+> [!note] title
+> This is an Admonition block.
+```
+
+另外，如果你有增加标注块类型的需求，比如自定义数学定理（Theorem）块，你可以直接使用 Obsidian-Admonition 插件添加，但是如何让 MkDocs-Material 能够识别自定义的内容并正确渲染呢？答案是在 `extra.css` 中添加相关内容。
+
+一种便捷的方法是，当你完成在 Obsidian 的 Admonition 插件界面自定义内容时，你可以直接导出对应的 CSS 文件。然后你可以参考这篇文章 [Admonition - Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/admonitions/#admonition-icons-fontawesome)，对导出的 CSS 内容进行修改（这一步可以交给 AI 完成），最后放入 `extra.css` 中即可。
+
+另外，`extra.css` 也有需要修改的地方，加入以下内容（注意 `plugin` 无缩进）：
+
+```yaml
+plugins:
+  - search
+  - callouts
+```
+
+
+### 其他兼容问题
+
+如果可以采取 HTML 的写法，那么两方都是可以兼容的，如键盘按键 `<kbd>`。
+
+其他 MkDocs Material 扩展与 Obsidian 不兼容的问题，可以采取终于源码的策略，使用 MkDocs Material 的写法，尽管这回牺牲一部分编辑体验。总的来说，只要不是改动相当大的写法，都是可以接收的。
+
+---
+
+## Github 域名解析不稳定问题以及使用其他平台进行部署
+
+在 Github 上部署，得到的域名包含 “Github”，这有可能导致大陆用户访问（尤其是移动端）失败。解决办法是换一个平台部署。
+
+可选的平台有：
+
+- Gitee （笔者使用期间页面部署服务关闭，因此未选择）
+- CloudFlare
+
+这两个平台上部署的网页在大陆能够稳定正常访问。笔者选择的是 CloudFlare。大致的步骤是，在 Works & Pages 界面，链接你指定的 Github 仓库，然后配置构建选项，执行部署，获得网页地址。此后每当你将新内容推送提交，CloudFlare 会自动构建并部署（需要几分钟时间）。（详细步骤有待后续更新）
+
+在其他平台上部署，你会需要在根目录下添加 `requirements.txt` 来告诉平台构建所需的依赖：
+
+```txt
+mkdocs-material
+mkdocs-callouts
+mkdocs
+```
+
+> [!warning] 
+> 注意不需要其他的内容！
+
+
+
+---
 
 ## Markdown 扩展功能演示大全
 
-欢迎来到功能演示页面！本页面旨在集中展示 `mkdocs-material` 中各种强大的 Markdown 扩展功能。请对照您的 `mkdocs.yml` 文件，确保相关扩展已开启。（本节大部分内容由 Gemini 2.5 PRO 辅助生成）
+欢迎来到功能演示页面！本页面旨在集中展示 `mkdocs-material` 中各种强大的 Markdown 扩展功能。（本节大部分内容由 Gemini 2.5 PRO 辅助生成）
 
 旁边的目录（Table of Contents）是由 `toc` 扩展生成的。
 
@@ -252,32 +604,32 @@ mkdocs gh-deploy
 > 在版本 1.0 中，此功能可能存在兼容性问题。
 
 > [!definition]
-> aaaa
+> 这是一个数学定义
 
 > [!theorem]
-> bbbbbb
+> 这是一个数学定理
 
 > [!lemma]
-> cccccc
+> 这是一个数学引理
 
 > [!corollary]
-> dddddd
+> 这是一个数学推论
 
 > [!proposition]
-> eeeeeee
+> 这是一个命题
 
 
 > [!property]
-> This is a property.
+> 这是一个性质
 
 > [!axiom]
-> This is an axiom.
+> 这是一个数学公理
 
 > [!proof]
-> This is a Proof
+> 这是一个数学证明
 
 > [!algorithm]
-> This is an algorithm.
+> 这是一个算法
 
 
 
