@@ -520,7 +520,7 @@ theme:
 
 一种便捷的方法是，当你完成在 Obsidian 的 Admonition 插件界面自定义内容时，你可以直接导出对应的 CSS 文件。然后你可以参考这篇文章 [Admonition - Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/admonitions/#admonition-icons-fontawesome)，对导出的 CSS 内容进行修改（这一步可以交给 AI 完成），最后放入 `extra.css` 中即可。
 
-另外，`extra.css` 也有需要修改的地方，加入以下内容（注意 `plugin` 无缩进）：
+另外，`mkdocs.yml` 也有需要修改的地方，加入以下内容（注意 `plugin` 无缩进）：
 
 ```yaml
 plugins:
@@ -528,12 +528,18 @@ plugins:
   - callouts
 ```
 
+为了让 `callouts` 标签能够正常使用，你还需要安装相关依赖：
+
+```bash
+sudo apt install mkdocs-callouts
+```
+
 
 ### 其他兼容问题
 
 如果可以采取 HTML 的写法，那么两方都是可以兼容的，如键盘按键 `<kbd>`。
 
-其他 MkDocs Material 扩展与 Obsidian 不兼容的问题，可以采取终于源码的策略，使用 MkDocs Material 的写法，尽管这回牺牲一部分编辑体验。总的来说，只要不是改动相当大的写法，都是可以接收的。
+其他 MkDocs Material 扩展与 Obsidian 不兼容的问题，可以采取忠于源码的策略，使用 MkDocs Material 的写法，尽管这会牺牲一部分编辑体验。总的来说，只要不是改动相当大的写法，都是可以接受的。
 
 ---
 
@@ -565,7 +571,7 @@ mkdocs
 
 ## Markdown 扩展功能演示大全
 
-欢迎来到功能演示页面！本页面旨在集中展示 `mkdocs-material` 中各种强大的 Markdown 扩展功能。（本节大部分内容由 Gemini 2.5 PRO 辅助生成）
+欢迎来到功能演示页面！本节旨在集中展示 `mkdocs-material` 中各种 Markdown 扩展功能。（由 Gemini 2.5 PRO 辅助生成）
 
 旁边的目录（Table of Contents）是由 `toc` 扩展生成的。
 
