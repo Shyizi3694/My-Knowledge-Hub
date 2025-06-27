@@ -109,11 +109,14 @@ nav:
 
   - Research:
       - 概述与方法论: research/index.md
-      - 机器学习基础: research/machine_learning_basics.md
+      - 从零实现机器学习经典算法:
+          - 机器学习算法导论: research/machine_learning/index.md
       - 深度学习算法复现:
           - 项目一：CNN 图像分类: research/repro/cnn_project.md
           - 项目二：Transformer 文本生成: research/repro/transformer_project.md
           - 项目三：强化学习 CartPole: research/repro/rl_cartpole.md
+      - 从零实现数学规划经典算法: 
+          - 数学规划算法导论: research/mp_from_scratch/index.md
       - 全国大学生数学建模竞赛:
           - AI 给出的竞赛准备建议: research/CUMCM/ai_suggestion.md
           - AI 给出的关于代码库构建的问题讨论: research/CUMCM/ai_code_library.md
