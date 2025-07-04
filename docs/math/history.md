@@ -384,6 +384,7 @@ $$
 
 > [!question] 
 > 求解同余方程：
+> 
 > $$
 > \begin{align}
 > n & \equiv 2 \mod 3 \\
@@ -397,6 +398,7 @@ $$
 
 > [!question] 
 > 百鸡问题即下列方程组的正整数解问题：
+> 
 > $$
 > \begin{align}
 > x+y+z & = 100 \\
