@@ -584,13 +584,13 @@ const int c = 20;
 
 我们从一个例子开始：
 
-> [!example]
-考虑将一个点（Point）的相关内容封装为一个整体，需要的内容有：
-- 点本身的信息
-	- 点的位置（二维空间的点则为 x,y）
-- 与点有关的行为
-	- 打印点的位置
-	- 移动点至某处（或者将位置加减）
+> [!example] 点 Point
+> 考虑将一个点（Point）的相关内容封装为一个整体，需要的内容有：
+> - 点本身的信息
+> 	- 点的位置（二维空间的点则为 x,y）
+> - 与点有关的行为
+> 	- 打印点的位置
+> 	- 移动点至某处（或者将位置加减）
 
 
 在 C 中，我们使用结构体：
@@ -628,127 +628,230 @@ private:
 - Operations 操作：函数
 	- 例子中的打印、移动函数
 
+> [!example]- 另一个例子：售票机
+> - Datas: 
+> 	- price
+> 	- balance
+> 	- total
+> - Operations:
+> 	- Show Prompt
+> 	- Print Balance
+> 	- Insert Money
+> 	- Print Ticket
+> 
+> 用代码表示：
+> 
+> ```cpp
+> class TicketMachine {
+> public:
+> 	void showPrompt();
+> 	void getMoney();
+> 	printTicket();
+> 	showBalance();
+> 	printError();
+> private:
+> 	const int price;
+> 	int balance;
+> 	int total;
+> };
+> ```
 
+> [!note] Object v.s. Class
+> - Object 对象
+> 	- 代表事物，场景
+> 	- 在运行时对信息做出反映
+> - Classes 类
+> 	- 定义实例的性质
+> 	- 与 C++ 其他类型有类似的行为
 
+总的来说，类给出了对象的定义，对象是定义在类上的，是实例化的类。
 
+### Section 4.3: The Coding Paradigm of a Class
 
+在 C++ 中，规范的代码写法是使用分离但同名的一个头文件（`.h`）和一个源文件（`.cpp`）来定义单一的一个类。
 
+类的声明和成员函数的原型需要写在头文件中，所有的函数主体（成员函数的实现）需要写在源文件中，然后 `#include "header.h"`。
 
+这样做的好处是，让头文件作为代码的作者和用户之间的契约，只将头文件中的内容呈现给用户，而隐藏成员函数的具体细节，是一种很好的抽象模式。这种契约由编译器保证强制执行。
 
+### Section 4.4: Building Process
 
+下面讲讲编译器是如何执行这种契约的。
 
+这种契约的执行就是从源代码到可执行文件的过程，即构建流程（Build Process）。
 
-# 17th Mar: Class 
+- **Stage 1: 编译（Compilation）**
 
+简单来说，编译器的视野是狭隘的，一次只能看到一个 `.cpp` 文件，称为**编译单元（Compilation Unit）**，并将其转译为机器能看懂的二进制代码，产出一个**目标文件（Object File）**，在 Windows 上为 `.obj` 文件，在 Linux/macOS 上为 `.o` 文件。
 
->Example: 平面上一点，让其运动。
+在编译一个编译单元时，代码中可能会引用其他源文件实现的内容，`.h` 文件在其中的作用就是向编译器“承诺”，这个内容是真实存在的，具体实现在别处，并且应该严格按照 `.h` 文件中声明的类型或原型使用，让编译器能够照常编译而不会报错。
+
+- **Stage 2: 链接（Linking）**
+
+与编译器不同，链接器（Linker）的视野是**全局**的，接收所有由编译器生成的目标文件（`.obj` 文件），以及你可能用到的标准库或其他第三方库文件（`.lib`, `.a`），每发现一处目标文件中包含引用，在全局查找其真正实现所在的目标文件，将这两部分**链接**起来，最终生成一个单一的、完整的可执行文件 `.exe` 等。
+
+这样来看，一种显然可能发生的问题为**未定义引用（Undefined Reference）**，参考下面这个例子：
+
+> [!example]- 未定义引用例子
+> 设想一个类 `A`，其实现源文件 `A.cpp` 中引用了类 `B` 的方法，但是你在编译时只提供了 `A.cpp` 如错误地使用了命令行 `g++ main.cpp A.cpp`，则链接器找不到它所引用的内容所在的目标文件，抛出错误。
+> - 正确的做法是，（递归地）给出所有用到的源文件：`g++ main.cpp A.cpp B.cpp`
+
+另一种有可能会发生问题为**重定义（Multiple Definition）**，参考下面这个例子：
+
+> [!example]- 重定义例子：编译阶段
+> 设想一个类 `A`，其声明和实现分别放在 `A.h` 和 `A.cpp` 中。另有一个类 `B`，声明和头文件放在 `B.h` 和 `B.cpp` 中，但是 `B.h` 需要 `#include "A.h"`。
+> 
+> 编译器在编译 `main.cpp` 时，编译器看到 `#include "A.h`，于是将 `A.h` 的内容拷贝到头部，然后看到 `#include "B.h`，然后将 `B.h` 的内容拷贝到头部，包括其中包含的 `#include "A.h`，这就导致了一个编译单元中，`A.h` 出现了两次，抛出错误。
+
+编译阶段的重定义在大多数条件下是不推荐也难以改变项目结构来解决的。其实，我们只需要将头文件写的更加“标准”一些，加入 Include Guard：
 
 ```cpp
-//Global Variables
-int px, py; //coordinates of the point
-```
+#ifndef HEADER
+#define HEADER
 
-Move: `px += mx, py += my;`
-
-抽象的层级：
-1. Machine Code
-2. Logic Circuit
-
-Better:
-```cpp
-struct Point{
-	int x,y;
-};
-//Point* point_create(){}
-void point_init(Point *p, int ix, int iy)
-{
-	p->x = ix;
-	p->y = iy;
-}
-void point_print(){}
-
-void point_move(Point *p, int dx, int dy)
-{
-	p->x += dx;
-	p->y += dy;
-}
-```
-
-对点的**初始化、打印、移动**等基本功能进行了封装，调用之后`main()`的语义上更加清晰。
-
-```cpp
-struct Point;
-// Point* point_create();
-void point_print(Point* p);
-void point_init(Point* p, int ix, int iy);
-void point_move(Point *p, int dx, int dy)
-
-//structures and functions definition
-```
-
-上述为用户界面所见的接口。
-
-如果将函数放入结构体内部，作为成员函数，则不需要额外写`Point* p`参数，由 Compiler 代为填入在函数中原本用到`p->`的部分也不需要直接写出，可以直接写`x,y`。这就是 C++ 中的封装方式。
-
-可以将`int x,y;`作为` Private`，后面函数作为 `Public`，则不能在`main()`
-中直接改变 `p.x`。
-
- ==Object = Attributes + Services ==
-- Data
-- Operations
-
->example: Ticket Machine
-
-```cpp
-class TicketMachine
-{
-public://Operations
-	void print_ticket();
-	// .....
-private://Data
-	int balance;
-	int PRICE;
-	//......
-}
-```
-
-类的声明和函数签名需要放在Header（.h file）中，即：
-```cpp
-class Point{ //Interface
-private:
-	int x,y;
-public:
-	Point* point_create();
-	void point_print(Point* p);
-	void point_init(Point* p, int ix, int iy);
-	void point_move(Point *p, int dx, int dy);
-}
-```
-
-函数的具体实现需要放在源文件中（.cpp file），并且`# include "Header.h"`。在`main.cpp`中调用时，需要同时编译含有函数实现的源文件，否则尽管有函数的签名，链接上也会出现错误。**标准是做到接口和实现分离**。
-
-- 一个 .cpp 就是一个编译单元（Compilation Unit）。
-
-编译器一次看到一个 .cpp 文件，生成一个 .obj 文件。最后链接器将所有 .obj 文件链接。
-
-本地文件用`# include "Header.h"`，特定地址为`# include <Header.h>`
-
-Header 里面可以放入全局变量的声明：`external int globalx;`，但不能直接给出定义。
-
-Header里面 include 了别的 Header，若不加处理，则主文件中只能 include 一个 Header，否则会出现重定义的问题。解决办法是在 Header 中使用 Safe Guard：
-```cpp
-#ifndef __POINT_H__
-#define __POINT_H__
-//header content
+// contents in header.h
 
 #endif
 ```
 
-早期 oop 要求一个 .cpp 实现一个 class。
+这保证了拷贝同一个头文件的内容最多执行一次，从而避免了这种重定义的情况。除此之外，链接阶段也可能发生重定义问题：
 
-- The CMake utility -- Build Automation Tools
+> [!example]- 重定义例子：链接阶段
+> 假设一个全局的头文件中有一个函数，其实现也包含在其中。这个全局头文件被多个源文件导入，在编译阶段，由于编译器的视野时局限的，不会发生任何问题。但是在链接阶段，两个目标文件引用了两个地址不同但内容相同的文件，链接器判断不了，如果其他地方使用了这个内容，应该使用哪一个副本。
 
-OOP 的特点是，所有东西都是对象，程序就是一组对象。对象之间可以互相收发信息。
+正确的做法是，严格按照“声明和实现分离”的写法。
+
+> [!tip] 
+> 在实际工程中，一次参与构建的源文件可能非常多，使用 `g++` 命令行变得非常低效。一些自动化构建工具是非常推荐的：
+> - CMake
+
+
+### Section 4.5: Scope Resolution Operator
+
+`::` 称为**作用域解析运算符（Scope Resolution Operator）**，它的核心功能是用来**明确地告诉编译器，你想要访问的变量、函数或类型到底属于哪一个“作用域 (Scope)”**，从而解决可能出现的命名冲突和歧义。
+
+- **用法 1**：类作用域解析
+	`<Class Name>::<Member Name>`
+这是 `::` 最常见的用法。它将一个名字（函数、变量、类型等）与一个特定的类或结构体关联起来。
+
+主要应用场景有：
+
+- **1. 在类外定义成员函数**：当你在类的声明（通常在 `.h` 文件中）中只声明了函数原型，而在类定义的外部（通常在 `.cpp` 文件中）提供其实现时，你必须使用 `ClassName::` 来告诉编译器这个函数属于哪个类。
+
+```cpp
+// MyClass.h
+class MyClass {
+    void my_func();
+};
+
+// MyClass.cpp
+void MyClass::my_func() { // 必须用 MyClass:: 来指明作用域
+    // ... implementation ...
+}
+```
+
+- **2. 访问静态成员**：由于静态成员属于类本身，而不是某个特定对象，我们通常通过类名来访问它们。
+
+```cpp
+MyClass::static_variable = 100;
+MyClass::static_function();
+```
+
+- **3. 消除继承中的歧义**：当派生类覆盖了基类的同名函数时，如果你想在派生类内部明确地调用基类的版本，就需要使用 `BaseClassName::`。
+
+```cpp
+void Derived::some_func() {
+    // ...
+    Base::some_func(); // 明确调用基类的版本
+    // ...
+}
+```
+
+- **用法 2**：全局作用域解析（`::member`）
+
+当 `::` 运算符的**左边没有任何东西**时，它代表**全局命名空间 (global namespace)**，也就是你的程序中最外层的作用域。它的主要作用是，当一个**局部变量**或**类成员**与一个**全局变量**或**全局函数**同名时，用来明确地访问那个**全局**的版本。
+
+### Section 4.6: PImpl Technique ()
+
+上面内容是“声明和实现分离”的标准写法，其目的是只将头文件中的内容呈现给用户，而隐藏成员函数的具体细节，是一种很好的抽象模式。但是这种写法的局限性在于，必须在头文件中给出私有成员变量的声明，这一定程度上降低了隐藏性，同时，这意味着，任何包含该头文件的代码，都会在编译时依赖于该类的所有私有成员类型的定义。
+
+为了解决这种方法，产生了“指针到实现”（Pointer to Implementation）的技术。这种技术通过将所有私有成员进一步封装为一个类，只剩下该类的声明和一个指向该类的指针，以此进一步隐藏私有成员的细节。通过 PImple Technique，你的头文件会变成这样：
+
+```cpp
+// MyClass.h
+#include <memory> // for std::unique_ptr
+
+class MyClass {
+public:
+    MyClass();
+    ~MyClass(); // 析构函数必须在 .cpp 中实现
+    void do_something();
+private:
+    // 用户完全看不到 Impl 里面有什么
+    class Impl; // 只需要向前声明
+    std::unique_ptr<Impl> pimpl; // 只有一个指向实现的指针
+};
+```
+
+**降低编译依赖（Remove Compilation Dependency）** 是 PImpl Tech 是最主要、最强大的动机。
+
+- **标准做法的问题**：如果你的 `MyClass.h` 的 `private` 部分有一个 `SomeLibrary::Widget m_widget;` 成员，那么 `MyClass.h` 就必须 `#include <SomeLibrary/Widget.h>`。现在，任何 `#include "MyClass.h"` 的文件，都会间接地依赖于 `SomeLibrary/Widget.h`。如果 `Widget.h` 的开发者修改了他们的文件，那么**所有**包含了 `MyClass.h` 的文件都必须**重新编译**，即使它们根本不关心 `Widget`。在大型项目中，这会导致漫长的编译时间，被称为“编译依赖地狱”。
+- **Pimpl 的做法**：
+    1. `MyClass.h` 中不再有 `m_widget` 成员，自然也就不需要 `#include <SomeLibrary/Widget.h>`。
+    2. 真正的 `m_widget` 成员被移到了只在 `MyClass.cpp` 中定义的 `MyClass::Impl` 结构体里。
+    3. 只有 `MyClass.cpp` 这**一个文件**需要 `#include <SomeLibrary/Widget.h>`。
+- **结果**：现在如果 `Widget.h` 被修改，**只需要重新编译 `MyClass.cpp` 这一个文件**！所有其他只是用到了 `MyClass` 接口的文件都安然无恙，无需重新编译。这极大地**降低了模块间的编译耦合**，显著缩短了大型项目的构建时间。
+
+Pimpl 的使用存在争议，它在带来好处的同时，也引入了新的成本，所以是否使用它是一个需要权衡的“争议点”。
+
+- **运行时开销**：
+    1. **动态内存分配**：需要在构造函数中 `new` 一个实现对象，这有性能开销。
+    2. **指针间接寻址**：所有对成员的访问都需要通过一次指针的间接寻址 (`pimpl->...`)，这比直接访问成员变量要慢一点点。对于性能极其敏感的热点代码，这可能是个问题。
+- **代码复杂性**： 它增加了代码量和实现的复杂度。你需要维护一个额外的 `Impl` 类，并且主类中的所有方法都需要通过 `pimpl` 指针进行“转发调用”。
+
+### Section 4.7: Oject-oriented Programming with Classes
+
+自此我们可以稍微总结一下目前我们所了解的“面向对象编程”的特征和含义：
+
+> [!info] 
+> - 所有东西都是对象
+> - 一个程序是一组对象组成的，它们彼此之间通过==发送信息==（Messages）告诉对方应该做什么
+> - 每一个对象拥有自己的内存空间，这也是由其他对象组成的
+> - 任一对象都有其类型
+> - 某一特殊类型的所有对象能够接收相同信息
+
+这里的**信息**是什么呢？信息是怎么交互的？
+
+信息由发出方对象组成，由接收方对象转译。接收方对象在收到信息之后，可能返回一个结果，也可能导致接收方对象的状态变化。信息的交互是由方法调用传递的。
+
+此外，类的使用还体现了封装（Encapsulation）和抽象（Abstraction）的思想。
+
+> [!info] 封装
+> - 封装将数据和方法捆绑在一起
+> - 隐藏了内部处理数据的细节
+> - 限制了访问权限，用户只能访问到 public 的方法
+
+> [!info] 抽象
+> - 抽象是指忽略部分细节，专注于上层问题的能力
+> - 模块化（Modularization）是将整体分为部分的过程，并且使得部分之间能够独立构建，良好交互。
+
+### Section 4.8: Constructors and Default Constructor
+
+我们可以手动地给一个类
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 上述 Point 例子无法保证初始化动作一定发生，依赖于程序员的自觉，这是我们不愿看到的。解决办法是是使用参数化构造器 ctor (constructor)。
 ```cpp
