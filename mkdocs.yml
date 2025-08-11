@@ -111,6 +111,7 @@ nav:
       - 概述与方法论: research/index.md
       - 从零实现机器学习经典算法:
           - 机器学习算法导论: research/machine_learning/index.md
+          - 0、项目准备、框架与预处理: research/machine_learning/00_Framework_And_Preprocessing.md
       - 深度学习算法复现:
           - 项目一：CNN 图像分类: research/repro/cnn_project.md
           - 项目二：Transformer 文本生成: research/repro/transformer_project.md
