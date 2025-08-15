@@ -170,7 +170,7 @@ $$
 \text{RMSE} = \sqrt{\text{MSE}} = \sqrt{\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2}
 $$
 
-进一步，可以用 R-squared（$R^2$）来衡量��型的拟合优度，它表示模型解释的方差占总方差的比例：
+进一步，可以用 R-squared（$R^2$）来衡量模型的拟合优度，它表示模型解释的方差占总方差的比例：
 $$
 R^2 = 1 - \frac{\text{MSE}}{\text{Var}(y)}
 $$
