@@ -24,7 +24,7 @@ nav:
   - Home: index.md
 
   - Computer Science:
-      - 导论与概述: cs/index.md
+      - 导论与概述: cs/index_cs.md
       - 计算机理论基础:
           - 离散数学及其应用: cs/theory/discrete_math.md
           - 数据结构与算法分析: cs/theory/data_structures_algorithms.md
@@ -36,6 +36,8 @@ nav:
           - 数字逻辑设计: cs/systems/digital_logic.md
           - 计算机组成: cs/systems/organization.md
           - 计算机体系结构: cs/systems/architecture.md
+          - 操作系统: cs/systems/operating_systems.md
+          - 计算机网络: cs/systems/computer_networks.md
       - 数据科学与智能:
           - 人工智能导论: cs/ai/intro_to_ai.md
           - 数据挖掘导论: cs/ai/data_mining.md
@@ -46,7 +48,7 @@ nav:
 
 
   - Mathematics:
-      - 数学概述与思想: math/index.md
+      - 数学概述与思想: math/index_math.md
       - 分析学:
           - 数学分析 III: math/analysis/mathematical_analysis.md
           - 实变函数: math/analysis/real_analysis.md
@@ -62,12 +64,12 @@ nav:
           - 数理统计: math/prob_stats/mathematical_statistics.md
           - 数据建模与分析: math/prob_stats/data_modeling.md
       - 应用与优化:
-          - 优化实用算法: math/applied/optimization_algorithms.md
-          - 组合优化: math/applied/combinatorial_optimization.md
+          - 优化实用算法: math/prog_optim/optimization_algorithms.md
+          - 组合优化: math/prog_optim/combinatorial_optimization.md
       - 数学史: math/history.md
 
   - General Education:
-      - 概述: gen_ed/index.md
+      - 概述: gen_ed/index_gen.md
       - 自然科学类:
           - 微积分 I: gen_ed/natural_science/calculus_1.md
           - 微积分 II: gen_ed/natural_science/calculus_2.md
@@ -108,7 +110,7 @@ nav:
           - Shell & CLI Power-ups: skills/shell.md
 
   - Research:
-      - 概述与方法论: research/index.md
+      - 概述与方法论: research/index_research.md
       - 从零实现机器学习经典算法:
           - 机器学习算法导论: research/machine_learning/index.md
           - 0、项目准备、框架与预处理: research/machine_learning/00_Framework_And_Preprocessing.md
@@ -145,7 +147,7 @@ markdown_extensions:
   - admonition
   - toc:
       permalink: true # 为标题添加永久链接
-      toc_depth: 3    # 目录深度
+      toc_depth: 4    # 目录深度
   - meta
   - attr_list
 
